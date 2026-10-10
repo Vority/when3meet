@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create an event | when3meet</title>
+    <link rel="stylesheet" href="create-event.css" />
+  </head>
+  <body>
+    <main class="create-app">
+      <header class="site-header">
+        <a class="brand" href="index.html" aria-label="when3meet home">when3meet</a>
+        <span class="step-count" id="stepCount">01 / 04</span>
+      </header>
+
+      <section class="flow" aria-live="polite">
+        <div class="flow-track" id="flowTrack">
+          <section class="flow-step" id="nameStep" aria-labelledby="nameHeading">
+            <p class="eyebrow">Create a new event</p>
+            <h1 id="nameHeading">What are we calling it?</h1>
+            <p class="intro">Give your event a name so everyone knows what they are joining.</p>
+            <div class="step-action">
+              <label class="sr-only" for="eventName">Event name</label>
+              <input id="eventName" type="text" placeholder="Friday dinner" autocomplete="off" autofocus />
+              <button class="text-action next-button" id="nameNext" type="button">Continue <span aria-hidden="true">→</span></button>
+            </div>
+            <p class="field-message" id="nameMessage" role="alert"></p>
+          </section>
+
+          <section class="flow-step" id="timeStep" aria-labelledby="timeHeading" aria-hidden="true">
+            <p class="eyebrow">Step 02</p>
+            <h1 id="timeHeading">Choose a time interval</h1>
+            <p class="intro">Pick the days your event could happen. Your guests will find a time that works for everyone.</p>
+            <button class="date-input" id="datePickerButton" type="button" aria-haspopup="dialog" aria-expanded="false">
+              <span class="calendar-symbol" aria-hidden="true">▦</span>
+              <span id="dateSummary">Choose dates</span>
+              <span class="date-chevron" aria-hidden="true">⌄</span>
+            </button>
+            <div class="time-options">
+              <label>
+                From
+                <select id="startTime">
+                  <option>08:00</option>
+                  <option selected>09:00</option>
+                  <option>10:00</option>
+                  <option>11:00</option>
+                </select>
+              </label>
+              <span class="time-dash" aria-hidden="true">—</span>
+              <label>
+                Until
+                <select id="endTime">
+                  <option>16:00</option>
+                  <option selected>18:00</option>
+                  <option>20:00</option>
+                  <option>22:00</option>
+                </select>
+              </label>
+            </div>
+            <div class="step-navigation">
+              <button class="back-button" id="timeBack" type="button">← Back</button>
+              <button class="text-action next-button" id="timeNext" type="button">Continue <span aria-hidden="true">→</span></button>
+            </div>
+            <p class="field-message" id="dateMessage" role="alert"></p>
+          </section>
+
+          <section class="flow-step settings-step" id="settingsStep" aria-labelledby="settingsHeading" aria-hidden="true">
+            <p class="eyebrow">Step 03</p>
+            <h1 id="settingsHeading">Finishing touches...</h1>
+            <p class="intro">Choose the size of each time block. We recommend 1 hour for a simple overview.</p>
+            <div class="settings-fields">
+              <label>
+                Availability precision
+                <select id="blockLength">
+                  <option value="15">15 minutes</option>
+                  <option value="30">30 minutes</option>
+                  <option value="45">45 minutes</option>
+                  <option value="60" selected>1 hour (recommended)</option>
+                  <option value="90">1 hour 30 minutes</option>
+                  <option value="120">2 hours</option>
+                </select>
+              </label>
+            </div>
+            <div class="settings-navigation">
+              <button class="back-button" id="settingsBack" type="button">← Back</button>
+              <button class="text-action" id="settingsDone" type="button">Done <span aria-hidden="true">→</span></button>
+            </div>
+          </section>
+
+          <section class="flow-step ready-step" id="readyStep" aria-labelledby="readyHeading" aria-hidden="true">
+            <p class="eyebrow">All set</p>
+            <h1 id="readyHeading">Event is ready</h1>
+            <div class="ready-content">
+              <div class="ready-summary">
+              <p class="intro" id="readyDetails"></p>
+              </div>
+              <div class="ready-actions">
+                <button class="share-button" id="shareButton" type="button" aria-label="Share event" title="Share event">
+                  <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 8a3 3 0 1 0-2.83-4A3 3 0 0 0 15 5.18l-6.1 3.36a3 3 0 1 0 0 6.92L15 18.82A3 3 0 1 0 16 17l-6.1-3.36a3.02 3.02 0 0 0 0-2.28L16 8a3 3 0 0 0 2 .76Z"/></svg>
+                </button>
+                <button class="copy-button" id="copyButton" type="button" aria-label="Copy event link" title="Copy event link">
+                  <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="11" rx="1"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>
+                </button>
+              </div>
+              <p class="action-message" id="actionMessage" role="status"></p>
+              <div class="ready-navigation">
+                <button class="back-button" id="readyBack" type="button">← Back</button>
+                <button class="back-button table-toggle" id="tableToggle" type="button" aria-expanded="false">
+                  <span>Open timetable</span>
+                  <span aria-hidden="true">↓</span>
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="timetable-panel" id="timetablePanel" aria-hidden="true" hidden>
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Your availability</p>
+            <h2 id="tableTitle"></h2>
+          </div>
+          <div class="panel-actions">
+            <button class="clear-button" id="clearTable" type="button">Clear</button>
+            <button class="close-button" id="closeTable" type="button" aria-label="Close timetable">↑ Close</button>
+          </div>
+        </div>
+        <p class="panel-copy">Press and hold, then drag across the times that work for you.</p>
+        <div class="table-wrap">
+          <table id="availabilityTable">
+            <caption class="sr-only">Event availability timetable</caption>
+          </table>
+        </div>
+      </section>
+
+      <div class="calendar-popover" id="calendarPopover" role="dialog" aria-modal="false" aria-labelledby="calendarTitle" hidden>
+        <div class="calendar-header">
+          <button class="month-button" id="previousMonth" type="button" aria-label="Previous month">‹</button>
+          <h2 id="calendarTitle"></h2>
+          <button class="month-button" id="nextMonth" type="button" aria-label="Next month">›</button>
+        </div>
+        <div class="weekdays" aria-hidden="true">
+          <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+        <p class="calendar-help">Select a start date and an end date</p>
+        <button class="calendar-done" id="calendarDone" type="button">Done</button>
+      </div>
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </main>
+
+    <script src="create-event.js"></script>
+  </body>
+</html>
