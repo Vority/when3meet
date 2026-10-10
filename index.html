@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="no">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,52 +7,121 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main class="app">
-      <header class="card">
-        <h1>when3meet</h1>
-        <p class="subtitle">Simple scheduling, cleaner design.</p>
-        <div class="controls controls--top">
+    <div class="bg" aria-hidden="true">
+      <span class="blob b1"></span>
+      <span class="blob b2"></span>
+      <span class="blob b3"></span>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <div id="tip" class="tip" hidden></div>
+
+    <section id="loginScreen" class="login-screen card" aria-labelledby="loginTitle">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="17" rx="3" />
+          <path d="M8 2v4M16 2v4M3 10h18" />
+          <path d="m9 16 2 2 4-4" />
+        </svg>
+      </div>
+      <h1 id="loginTitle">Logg inn</h1>
+      <form id="loginForm" class="login-form" novalidate>
+        <div class="login-field">
+          <input
+            id="loginName"
+            type="text"
+            placeholder="Fornavn Etternavn"
+            aria-label="Fornavn og etternavn"
+            aria-describedby="loginError"
+            autocomplete="name"
+            autocapitalize="words"
+            spellcheck="false"
+          />
+          <button type="submit" class="arrow-button" aria-label="Fortsett">
+            <span class="arrow">→</span>
+          </button>
+        </div>
+        <p id="loginError" class="login-error" role="alert" hidden></p>
+      </form>
+    </section>
+
+    <main id="appShell" class="app" hidden>
+      <header class="card intro">
+        <div class="header-row">
+          <div>
+            <h1 id="eventTitle">Team meeting</h1>
+            <p class="subtitle">
+              Hei, <strong id="currentUser"></strong>! Dra over tidene du kan.
+            </p>
+          </div>
+          <button id="logout" class="ghost-button" type="button">Logg ut</button>
+        </div>
+
+        <div id="hostPanel" class="controls controls--top" hidden>
           <label>
-            Event name
-            <input id="eventName" type="text" value="Team meeting" />
+            Arrangementsnavn
+            <input id="eventNameInput" type="text" placeholder="Team meeting" />
           </label>
           <label>
-            Week start
+            Ukestart
             <input id="weekStart" type="date" />
           </label>
           <label>
-            Start hour
+            Fra time
             <input id="startHour" type="number" min="0" max="23" value="9" />
           </label>
           <label>
-            End hour
+            Til time
             <input id="endHour" type="number" min="1" max="24" value="18" />
           </label>
-          <button id="buildGrid">Build grid</button>
+          <button id="buildGrid" type="button">Oppdater</button>
+          <button id="clearAll" class="ghost-button" type="button">Tøm alle svar</button>
         </div>
       </header>
 
       <section class="card">
-        <div class="participant-row">
-          <label>
-            Your name
-            <input id="participantName" type="text" placeholder="Alex" />
-          </label>
-          <label>
-            Color
-            <input id="participantColor" type="color" value="#4f46e5" />
-          </label>
-          <button id="join">Join / update</button>
-          <button id="copyLink">Copy shareable link</button>
+        <div class="toolbar">
+          <div class="legend" aria-hidden="true">
+            <span class="legend-item"><i class="swatch swatch-mine"></i>Du kan</span>
+            <span class="legend-item"><i class="swatch swatch-scale"></i>Flere kan</span>
+          </div>
+          <div class="toolbar-actions">
+            <button id="selectAll" class="soft-btn" type="button">
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m5 12 5 5L20 7" />
+              </svg>
+              Alle tider passer
+            </button>
+            <button id="clearMine" class="ghost-button" type="button">Tøm mine valg</button>
+            <label class="switch" title="Lager en kortere lenke via is.gd">
+              <input type="checkbox" id="shortenToggle" />
+              <i class="track"></i>
+              <span>Kort lenke</span>
+            </label>
+            <button id="copyLink" class="copy-btn" type="button">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5" />
+                <path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5" />
+              </svg>
+              <span id="copyLabel">Kopier lenke</span>
+            </button>
+          </div>
         </div>
-        <p id="status" aria-live="polite"></p>
-      </section>
 
-      <section class="card">
-        <h2 id="gridTitle">Availability</h2>
+        <p id="saveStatus" class="save-status" role="status" aria-live="polite"></p>
+        <div id="people" class="people"></div>
+
         <div class="table-wrap">
           <table id="availabilityTable"></table>
         </div>
+        <p class="hint">
+          Trykk og dra over rutene for å velge flere om gangen. Start på en rute du har valgt for å fjerne.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>Beste tider</h2>
+        <ul id="bestList" class="best-list"></ul>
       </section>
     </main>
 
