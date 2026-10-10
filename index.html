@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>when3meet</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="card">
+        <h1>when3meet</h1>
+        <p class="subtitle">Simple scheduling, cleaner design.</p>
+        <div class="controls controls--top">
+          <label>
+            Event name
+            <input id="eventName" type="text" value="Team meeting" />
+          </label>
+          <label>
+            Week start
+            <input id="weekStart" type="date" />
+          </label>
+          <label>
+            Start hour
+            <input id="startHour" type="number" min="0" max="23" value="9" />
+          </label>
+          <label>
+            End hour
+            <input id="endHour" type="number" min="1" max="24" value="18" />
+          </label>
+          <button id="buildGrid">Build grid</button>
+        </div>
+      </header>
+
+      <section class="card">
+        <div class="participant-row">
+          <label>
+            Your name
+            <input id="participantName" type="text" placeholder="Alex" />
+          </label>
+          <label>
+            Color
+            <input id="participantColor" type="color" value="#4f46e5" />
+          </label>
+          <button id="join">Join / update</button>
+          <button id="copyLink">Copy shareable link</button>
+        </div>
+        <p id="status" aria-live="polite"></p>
+      </section>
+
+      <section class="card">
+        <h2 id="gridTitle">Availability</h2>
+        <div class="table-wrap">
+          <table id="availabilityTable"></table>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
